@@ -4,19 +4,21 @@
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CustomMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "DebugHelper.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
 // AClimberCharacter
 
-AClimberCharacter::AClimberCharacter()
+AClimberCharacter::AClimberCharacter(const FObjectInitializer& objectInitializer)
+	: Super(objectInitializer.SetDefaultSubobjectClass<UCustomMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -27,6 +29,7 @@ AClimberCharacter::AClimberCharacter()
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
+	CustomMovementComponent = Cast<UCustomMovementComponent>(GetCharacterMovement());
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
 
@@ -66,6 +69,8 @@ void AClimberCharacter::BeginPlay()
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
+
+		Debug::Print(TEXT("Debug working"));
 	}
 }
 
@@ -86,6 +91,9 @@ void AClimberCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AClimberCharacter::Look);
+
+		// Climbing
+		EnhancedInputComponent->BindAction(ClimbAction, ETriggerEvent::Started, this, &AClimberCharacter::OnClimbActionStarted);
 	}
 	else
 	{
@@ -127,4 +135,9 @@ void AClimberCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AClimberCharacter::OnClimbActionStarted(const FInputActionValue& Value)
+{
+	Debug::Print(TEXT("Climb started"));
 }
