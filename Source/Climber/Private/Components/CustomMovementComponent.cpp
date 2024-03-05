@@ -6,6 +6,7 @@
 #include "Climber/ClimberCharacter.h"
 #include "Climber/DebugHelper.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #pragma region OverridenFunctions
 
@@ -327,6 +328,11 @@ void UCustomMovementComponent::OnClimbMontageEnded(UAnimMontage* Montage, bool b
   {
     StartClimbing();
   }
+}
+
+FVector UCustomMovementComponent::GetUnrotatedClimbVelocity() const
+{
+  return UKismetMathLibrary::Quat_UnrotateVector(UpdatedComponent->GetComponentQuat(), Velocity);
 }
 
 #pragma endregion
