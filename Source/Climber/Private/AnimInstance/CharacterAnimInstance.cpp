@@ -1,0 +1,54 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "AnimInstance/CharacterAnimInstance.h"
+#include "Climber/ClimberCharacter.h"
+#include "Components/CustomMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+
+void UCharacterAnimInstance::NativeInitializeAnimation()
+{
+	Super::NativeInitializeAnimation();
+
+	ClimberCharacter = Cast<AClimberCharacter>(TryGetPawnOwner());
+
+	if (ClimberCharacter)
+	{
+		CustomMovementComponent = ClimberCharacter->GetCustomMovementComponent();
+	}
+}
+
+void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	if (!ClimberCharacter || !CustomMovementComponent) return;
+
+	GetGroundSpeed();
+	GetAirSpeed();
+	GetShouldMove();
+	GetIsFalling();
+}
+
+void UCharacterAnimInstance::GetGroundSpeed()
+{
+	GroundSpeed = UKismetMathLibrary::VSizeXY(ClimberCharacter->GetVelocity());
+}
+
+void UCharacterAnimInstance::GetAirSpeed()
+{
+	AirSpeed = ClimberCharacter->GetVelocity().Z;
+}
+
+void UCharacterAnimInstance::GetShouldMove()
+{
+	bShouldMove =
+		CustomMovementComponent->GetCurrentAcceleration().Size() > 0 &&
+		GroundSpeed > 5.f &&
+		!bIsFalling;
+}
+
+void UCharacterAnimInstance::GetIsFalling()
+{
+	bIsFalling = CustomMovementComponent->IsFalling();
+}
