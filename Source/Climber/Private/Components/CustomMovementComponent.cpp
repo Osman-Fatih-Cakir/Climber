@@ -16,8 +16,8 @@ void UCustomMovementComponent::BeginPlay()
   OwningPlayerAnimInstance = CharacterOwner->GetMesh()->GetAnimInstance();
   if (OwningPlayerAnimInstance)
   {
-    OwningPlayerAnimInstance->OnMontageEnded.AddDynamic(this, &UCustomMovementComponent::OnClimbMontageEndedd);
-    OwningPlayerAnimInstance->OnMontageBlendingOut.AddDynamic(this, &UCustomMovementComponent::OnClimbMontageEndedd);
+    OwningPlayerAnimInstance->OnMontageEnded.AddDynamic(this, &UCustomMovementComponent::OnClimbMontageEnded);
+    OwningPlayerAnimInstance->OnMontageBlendingOut.AddDynamic(this, &UCustomMovementComponent::OnClimbMontageEnded);
   }
 }
 
@@ -298,7 +298,7 @@ bool UCustomMovementComponent::TraceClimbableSurfaces()
   const FVector StartOffset = UpdatedComponent->GetForwardVector() * 30.0f;
   const FVector Start = UpdatedComponent->GetComponentLocation() + StartOffset;
   const FVector End = Start + UpdatedComponent->GetForwardVector();
-  ClimbableSurfacesTracedResults = DoCapsuleTraceMultiByObject(Start, End, true);
+  ClimbableSurfacesTracedResults = DoCapsuleTraceMultiByObject(Start, End);
 
   return !ClimbableSurfacesTracedResults.IsEmpty();
 }
@@ -321,9 +321,12 @@ void UCustomMovementComponent::PlayClimbMontage(UAnimMontage* MontageToPlay)
   OwningPlayerAnimInstance->Montage_Play(MontageToPlay);
 }
 
-void UCustomMovementComponent::OnClimbMontageEndedd(UAnimMontage* Montage, bool bInterrupted)
+void UCustomMovementComponent::OnClimbMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-  Debug::Print(TEXT("Climb montage ended."));
+  if (Montage == IdleToClimbMontage)
+  {
+    StartClimbing();
+  }
 }
 
 #pragma endregion

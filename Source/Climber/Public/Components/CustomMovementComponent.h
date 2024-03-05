@@ -66,7 +66,7 @@ private:
   void PlayClimbMontage(UAnimMontage* MontageToPlay);
 
   UFUNCTION()
-  void OnClimbMontageEndedd(UAnimMontage* Montage, bool bInterrupted);
+  void OnClimbMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 #pragma endregion
 
 #pragma region ClimbVariables
