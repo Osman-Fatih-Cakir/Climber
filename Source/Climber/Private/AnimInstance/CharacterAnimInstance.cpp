@@ -49,7 +49,7 @@ void UCharacterAnimInstance::GetShouldMove()
 		GroundSpeed > 5.f &&
 		!bIsFalling;
 }
-
+ 
 void UCharacterAnimInstance::GetIsFalling()
 {
 	bIsFalling = CustomMovementComponent->IsFalling();

@@ -69,8 +69,6 @@ void AClimberCharacter::BeginPlay()
     {
       Subsystem->AddMappingContext(DefaultMappingContext, 0);
     }
-
-    Debug::Print(TEXT("Debug working"));
   }
 }
 
