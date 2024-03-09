@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "MotionWarpingComponent.h"
 #include "DebugHelper.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -53,8 +54,7 @@ AClimberCharacter::AClimberCharacter(const FObjectInitializer& objectInitializer
   FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
   FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-  // Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-  // are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+  MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComp"));
 }
 
 void AClimberCharacter::BeginPlay()
