@@ -224,7 +224,7 @@ bool UCustomMovementComponent::CanStartVaulting(FVector& OutVaultStartPosition, 
 
     const FVector End = Start + DownVector * 100.f * (i + 1);
 
-    FHitResult VaultTraceHit = DoLineTraceSingleByObject(Start, End, true, true);
+    FHitResult VaultTraceHit = DoLineTraceSingleByObject(Start, End);
 
     if (i == 0 && VaultTraceHit.bBlockingHit)
     {

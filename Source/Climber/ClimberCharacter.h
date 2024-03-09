@@ -25,6 +25,7 @@ class AClimberCharacter : public ACharacter
 public:
 	AClimberCharacter(const FObjectInitializer& objectInitializer);
 
+#pragma region Components
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
@@ -32,13 +33,15 @@ public:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UCustomMovementComponent* CustomMovementComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UMotionWarpingComponent* MotionWarpingComponent;
+#pragma endregion
 
+#pragma region Input
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
@@ -51,25 +54,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
 
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* LookAction;
+
+	/** Climb Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ClimbAction;
+#pragma endregion
+
+#pragma region InputCallback
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
 	void HandleGroundMovementInput(const FInputActionValue& Value);
 	void HandleClimbMovementInput(const FInputActionValue& Value);
 
-	/** Look Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* LookAction;
-
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
-	/** Climb Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* ClimbAction;
 
 	/** Called for looking input */
 	void OnClimbActionStarted(const FInputActionValue& Value);
+#pragma endregion
 
 protected:
 	// APawn interface
