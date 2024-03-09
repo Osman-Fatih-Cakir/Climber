@@ -6,6 +6,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CustomMovementComponent.generated.h"
 
+DECLARE_DELEGATE(FOnEnterClimbState)
+DECLARE_DELEGATE(FOnExitClimbState)
+
 class UAnimMontage;
 class UAnimInstance;
 class AClimberCharacter;
@@ -23,6 +26,10 @@ UCLASS()
 class CLIMBER_API UCustomMovementComponent : public UCharacterMovementComponent
 {
   GENERATED_BODY()
+
+public:
+  FOnEnterClimbState OnEnterClimbStateDelegate;
+  FOnExitClimbState OnExitClimbStateDelegate;
 
 protected:
 

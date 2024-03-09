@@ -37,6 +37,8 @@ void UCustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovem
   {
     bOrientRotationToMovement = false;
     CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(48.0f);
+
+    OnEnterClimbStateDelegate.ExecuteIfBound();
   }
 
   if (PreviousMovementMode == MOVE_Custom && PreviousCustomMode == ECustomMovementMode::MOVE_Climb)
@@ -48,6 +50,8 @@ void UCustomMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovem
     const FRotator CleanStandRotation = FRotator(0.0f, DirtyRotation.Yaw, 0.0f);
     UpdatedComponent->SetRelativeRotation(CleanStandRotation);
     StopMovementImmediately();
+
+    OnExitClimbStateDelegate.ExecuteIfBound();
   }
 
   Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
