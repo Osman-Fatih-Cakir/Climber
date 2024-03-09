@@ -73,6 +73,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ClimbMoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ClimbHopAction;
 #pragma endregion
 
 #pragma region InputCallback
@@ -84,6 +87,8 @@ public:
 
 	/** Called for looking input */
 	void OnClimbActionStarted(const FInputActionValue& Value);
+
+	void OnClimbHopActionStarted(const FInputActionValue& Value);
 #pragma endregion
 
 protected:

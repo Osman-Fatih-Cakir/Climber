@@ -114,6 +114,8 @@ void AClimberCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AClimberCharacter::HandleGroundMovementInput);
     EnhancedInputComponent->BindAction(ClimbMoveAction, ETriggerEvent::Triggered, this, &AClimberCharacter::HandleClimbMovementInput);
 
+    EnhancedInputComponent->BindAction(ClimbHopAction, ETriggerEvent::Started, this, &AClimberCharacter::OnClimbHopActionStarted);
+
     // Looking
     EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AClimberCharacter::Look);
 
@@ -198,4 +200,12 @@ void AClimberCharacter::OnPlayerEnterClimbState()
 void AClimberCharacter::OnPlayerExitClimbState()
 {
   RemoveInputMappingContext(ClimbMappingContext);
+}
+
+void AClimberCharacter::OnClimbHopActionStarted(const FInputActionValue& Value)
+{
+  if (CustomMovementComponent)
+  {
+    CustomMovementComponent->RequestHopping();
+  }
 }
