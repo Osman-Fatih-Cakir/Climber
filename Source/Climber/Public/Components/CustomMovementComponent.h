@@ -91,8 +91,10 @@ private:
   void SetMotionWarpTarget(const FName& InWarpTargetName, const FVector& InTargetPosition);
 
   void HandleHopUp();
+  void HandleHopDown();
 
   bool CheckCanHopUp(FVector& OutHopUpTargetPosition);
+  bool CheckCanHopDown(FVector& OutHopDownTargetPosition);
 #pragma endregion
 
 #pragma region ClimbVariables
@@ -147,6 +149,9 @@ private:
 
   UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
   UAnimMontage* HopUpMontage;
+
+  UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing", meta = (AllowPrivateAccess = "true"))
+  UAnimMontage* HopDownMontage;
 
   UPROPERTY()
   AClimberCharacter* OwningPlayerCharacter;

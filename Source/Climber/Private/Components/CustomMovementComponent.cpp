@@ -514,21 +514,13 @@ void UCustomMovementComponent::RequestHopping()
   const float DotResult =
     FVector::DotProduct(UnrotatedLastInputVector.GetSafeNormal(), FVector::UpVector);
 
-  Debug::Print(TEXT("Dot result: ") + FString::SanitizeFloat(DotResult));
-
   if (DotResult >= 0.9f)
   {
-    Debug::Print(TEXT("Hop Up"));
-
     HandleHopUp();
   }
   else if (DotResult <= -0.9f)
   {
-    Debug::Print(TEXT("Hop Down"));
-  }
-  else
-  {
-    Debug::Print(TEXT("Invalid Input Range"));
+    HandleHopDown();
   }
 }
 
@@ -549,19 +541,43 @@ void UCustomMovementComponent::HandleHopUp()
   if (CheckCanHopUp(HopUpTargetPoint))
   {
     SetMotionWarpTarget(FName("HopUpTargetPoint"), HopUpTargetPoint);
-
     PlayClimbMontage(HopUpMontage);
+  }
+}
+
+void UCustomMovementComponent::HandleHopDown()
+{
+  FVector HopDownTargetPoint;
+
+  if (CheckCanHopDown(HopDownTargetPoint))
+  {
+    SetMotionWarpTarget(FName("HopDownTargetPoint"), HopDownTargetPoint);
+    PlayClimbMontage(HopDownMontage);
   }
 }
 
 bool UCustomMovementComponent::CheckCanHopUp(FVector& OutHopUpTargetPosition)
 {
-  FHitResult HopUpHit = TraceFromEyeHeight(100.f, -30.f, true, true);
-  FHitResult SaftyLedgeHit = TraceFromEyeHeight(100.f, 150.f, true, true);
+  FHitResult HopUpHit = TraceFromEyeHeight(100.f, -20.0f, true, true);
+  FHitResult SaftyLedgeHit = TraceFromEyeHeight(100.f, 150.0f, true, true);
 
   if (HopUpHit.bBlockingHit && SaftyLedgeHit.bBlockingHit)
   {
     OutHopUpTargetPosition = HopUpHit.ImpactPoint;
+
+    return true;
+  }
+
+  return false;
+}
+
+bool UCustomMovementComponent::CheckCanHopDown(FVector& OutHopDownTargetPosition)
+{
+  FHitResult HopDownHit = TraceFromEyeHeight(100.f, -300.0f, true, true);
+
+  if (HopDownHit.bBlockingHit)
+  {
+    OutHopDownTargetPosition = HopDownHit.ImpactPoint;
 
     return true;
   }
