@@ -224,7 +224,7 @@ bool UCustomMovementComponent::CanStartVaulting(FVector& OutVaultStartPosition, 
   for (int32 i = 0; i < 5; i++)
   {
     const FVector Start = ComponentLocation + UpVector * 100.f +
-      ComponentForward * 100.f * (i + 1);
+      ComponentForward * 80.f * (i + 1);
 
     const FVector End = Start + DownVector * 100.f * (i + 1);
 
@@ -558,8 +558,8 @@ void UCustomMovementComponent::HandleHopDown()
 
 bool UCustomMovementComponent::CheckCanHopUp(FVector& OutHopUpTargetPosition)
 {
-  FHitResult HopUpHit = TraceFromEyeHeight(100.f, -20.0f, true, true);
-  FHitResult SaftyLedgeHit = TraceFromEyeHeight(100.f, 150.0f, true, true);
+  FHitResult HopUpHit = TraceFromEyeHeight(100.f, -20.0f);
+  FHitResult SaftyLedgeHit = TraceFromEyeHeight(100.f, 150.0f);
 
   if (HopUpHit.bBlockingHit && SaftyLedgeHit.bBlockingHit)
   {
@@ -573,7 +573,7 @@ bool UCustomMovementComponent::CheckCanHopUp(FVector& OutHopUpTargetPosition)
 
 bool UCustomMovementComponent::CheckCanHopDown(FVector& OutHopDownTargetPosition)
 {
-  FHitResult HopDownHit = TraceFromEyeHeight(100.f, -300.0f, true, true);
+  FHitResult HopDownHit = TraceFromEyeHeight(100.f, -300.0f);
 
   if (HopDownHit.bBlockingHit)
   {
